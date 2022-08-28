@@ -1,4 +1,4 @@
-package neuralnet
+package com.stavzog.minineuralnet
 
 import kotlin.math.roundToInt
 import kotlin.random.Random
@@ -89,7 +89,7 @@ class Matrix(val rows: Int, val cols: Int) {
     fun copy(): Matrix = Matrix(rows,cols).mapIndexed { r, c, _ -> this@Matrix[r,c] }
 
     companion object {
-        fun change(m: Matrix,action: (Number) -> Number): Matrix = m.copy().map(action)
+        fun change(m: Matrix, action: (Number) -> Number): Matrix = m.copy().map(action)
 
     }
 }

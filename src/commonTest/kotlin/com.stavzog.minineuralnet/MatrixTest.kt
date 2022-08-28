@@ -1,7 +1,5 @@
 package com.stavzog.minineuralnet
 
-import neuralnet.Matrix
-import neuralnet.map
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -40,12 +38,12 @@ class MatrixTest {
         return Matrix(r,c).map { x }
     }
 
-    private fun testElementWise(expected: Matrix, action: (x: Matrix,y: Matrix) -> Matrix, r:Int=2, c:Int=2, x:Double=1.0) {
+    private fun testElementWise(expected: Matrix, action: (x: Matrix, y: Matrix) -> Matrix, r:Int=2, c:Int=2, x:Double=1.0) {
         assertEquals( expected, action(uni(x,r,c),uni(x,r,c)) )
         assertFailsWith<IllegalArgumentException>{ action(uni(x,r,c),uni(x,r+3,c+2)) }
     }
 
-    private fun testScalar(expected: Matrix,action: (x: Matrix) -> Matrix, r:Int=2, c:Int=2, x:Double=1.0) {
+    private fun testScalar(expected: Matrix, action: (x: Matrix) -> Matrix, r:Int=2, c:Int=2, x:Double=1.0) {
         assertEquals(expected , action(uni(x,r,c)) )
     }
 
