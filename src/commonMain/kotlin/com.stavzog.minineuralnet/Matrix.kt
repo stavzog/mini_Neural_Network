@@ -38,6 +38,19 @@ class Matrix(val rows: Int, val cols: Int) {
         return mapIndexed { i, j, it -> it.toDouble() * m[i,j].toDouble() }
     }
 
+    override operator fun equals(other: Any?): Boolean {
+        if (other !is Matrix) return false
+        if (data == other.data && rows == other.rows && cols == other.cols) return true
+        return false
+    }
+
+    override fun hashCode(): Int = hashCodeOf(data, rows, cols)
+
+    private inline fun hashCodeOf(vararg values: Any?) =
+        values.fold(0) { acc, value ->
+            (acc * 31) + value.hashCode()
+        }
+
     fun flatten(): DoubleArray {
         var arr = doubleArrayOf()
         forEachIndexed { _, _, el ->
@@ -64,14 +77,14 @@ class Matrix(val rows: Int, val cols: Int) {
 
     infix fun dot(m: Matrix): Matrix {
         if(cols != m.rows) throw IllegalArgumentException("Matrix A columns must match Matrix B rows")
-        return Matrix(rows, m.cols).mapIndexed { i, j, el ->
+        return Matrix(rows, m.cols).mapIndexed { i, j, _ ->
             var sum = 0.0
             for(k in 0 until cols) sum += this[i,k].toDouble() * m[k,j].toDouble()
             sum
         }
     }
 
-    private fun transpose() = Matrix(cols, rows).mapIndexed { r, c, el -> this[c,r] }
+    private fun transpose() = Matrix(cols, rows).mapIndexed { r, c, _ -> this[c,r] }
 
     fun copy(): Matrix = Matrix(rows,cols).mapIndexed { r, c, _ -> this@Matrix[r,c] }
 
