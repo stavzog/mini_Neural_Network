@@ -19,3 +19,5 @@ nn.train(doubleArrayOf(1,0),doubleArrayOf(0))
 //Get an output with guess(input: DoubleArray)
 val output = nn.guess(doubleArrayOf(0,0)) 
 ```
+---
+Currently, you can get this library by cloning the repo and running `./gradlew publishToMavenLocal`
