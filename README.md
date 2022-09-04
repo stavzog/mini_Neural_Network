@@ -7,6 +7,7 @@ Currently it supports neural network creation with dense layers but the stochast
 val model = Network(
   Input(2),
   Dense(2),
-  Dense(2)
+  Activation(Activations.ReLu)
+  Dense(2, activation = Activations.Sigmoid)
 )
 ```
