@@ -11,3 +11,4 @@ val model = Network(
   Dense(2, activation = Activations.Sigmoid)
 )
 ```
+<sub>Feel free to contribute</sub>
