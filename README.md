@@ -1,6 +1,4 @@
-# Mini Neural Network
-This is a neural network library written in kotlin made by following the logic of 
-[these](https://www.youtube.com/watch?v=XJ7HLz9VYz0&list=PLRqwX-V7Uu6aCibgK1PTWWu9by6XFdCfh) videos. 
-This liberary allows the creation of a NN with 2 dense layers. This library also includes a genetic algorithm along with a basic matrix operations library.
+# Renewed Library
+A new simple neural network library inspired by kotlin-dl.
+Currently it supports neural network creation with dense layers but the stochastic gradient descent algorithm still needs work. As such the api remains unusable.
 
-## Getting Started
