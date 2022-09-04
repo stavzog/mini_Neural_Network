@@ -5,4 +5,4 @@ depends=kotlin
 ir_version=1.0.0
 jsOutputName=mini_Neural_Network-js-ir
 metadata_version=1.4.1
-unique_name=me.stavros.zografos\:mini_Neural_Network
+unique_name=io.github.stavzog.minineuralnet\:mini_Neural_Network

@@ -1,9 +1,10 @@
 plugins {
     kotlin("multiplatform") version "1.7.10"
+    id("maven-publish")
 }
 
-group = "me.stavros.zografos"
-version = "1.0-SNAPSHOT"
+group = "io.github.stavzog.minineuralnet"
+version = "1.0.0"
 
 repositories {
     mavenCentral()

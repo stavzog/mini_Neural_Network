@@ -1,4 +1,4 @@
-package com.stavzog.minineuralnet
+package io.github.stavzog.minineuralnet
 
 import kotlin.math.roundToInt
 import kotlin.random.Random
@@ -14,6 +14,10 @@ class Matrix(val rows: Int, val cols: Int) {
         forEachIndexed { i, _, _ ->
             this[i,0] = array[i]
         }
+    }
+
+    constructor(rows: Int, cols: Int, list: MutableList<Number>): this(rows,cols) {
+        data = list
     }
 
     operator fun get(r: Int, c: Int) = data[r*cols+c]
@@ -46,7 +50,7 @@ class Matrix(val rows: Int, val cols: Int) {
 
     override fun hashCode(): Int = hashCodeOf(data, rows, cols)
 
-    private inline fun hashCodeOf(vararg values: Any?) =
+    private fun hashCodeOf(vararg values: Any?) =
         values.fold(0) { acc, value ->
             (acc * 31) + value.hashCode()
         }
@@ -59,7 +63,7 @@ class Matrix(val rows: Int, val cols: Int) {
         return arr
     }
 
-    fun forEachIndexed(action: (i: Int, j: Int, it: Number) -> Unit): Matrix {
+    inline fun forEachIndexed(action: (i: Int, j: Int, it: Number) -> Unit): Matrix {
         for(i in 0 until rows) {
             for (j in 0 until cols) {
                 action(i,j,this[i,j])
@@ -68,37 +72,34 @@ class Matrix(val rows: Int, val cols: Int) {
         return this
     }
 
-    fun mapIndexed(action: (r: Int,c: Int,el: Number) -> Number): Matrix {
-        forEachIndexed { r, c, el ->
-            this[r,c] = action(r,c,el)
-        }
-        return this
-    }
+
+    //returns new matrix with rows, cols
+    inline fun mapIndexed(action: (r: Int,c: Int,el: Number) -> Number): Matrix =
+        createMatrix(rows, cols) { i , j -> action(i,j,this[i,j])}
+
 
     infix fun dot(m: Matrix): Matrix {
         if(cols != m.rows) throw IllegalArgumentException("Matrix A columns must match Matrix B rows")
-        return Matrix(rows, m.cols).mapIndexed { i, j, _ ->
+        return createMatrix(rows, m.cols) {i,j ->
             var sum = 0.0
-            for(k in 0 until cols) sum += this[i,k].toDouble() * m[k,j].toDouble()
+            for(k in 0 until cols) sum+= this[i,k].toDouble() * m[k,j].toDouble()
             sum
         }
     }
 
-    private fun transpose() = Matrix(cols, rows).mapIndexed { r, c, _ -> this[c,r] }
+    private fun transpose() =
+        createMatrix(cols,rows) { r,c -> this[c,r] }
 
-    fun copy(): Matrix = Matrix(rows,cols).mapIndexed { r, c, _ -> this@Matrix[r,c] }
+    fun copy(): Matrix =
+        createMatrix(rows,cols) { r ,c -> this[r,c] }
 
-    companion object {
-        fun change(m: Matrix, action: (Number) -> Number): Matrix = m.copy().map(action)
-
-    }
 }
 
 fun Matrix.print(): Matrix {
     for(i in 0 until rows) {
         print("[")
         for (j in 0 until cols) {
-            print("${this[i,j].toDouble().roundToInt() / 100.0}\t")
+            print("${(this[i,j].toDouble() * 100).roundToInt() / 100.0}\t")
         }
         println("\b]")
     }
@@ -113,5 +114,15 @@ fun Matrix.randomize() = forEachIndexed { r, c, _ ->
 //Random.nextDouble() * 2 - 1
 
 fun Matrix.map(action: (Number) -> Number) = mapIndexed { _, _, el -> action(el)}
+
+inline fun createMatrix(rows: Int, cols: Int, init: (r: Int, c: Int) -> Number): Matrix {
+    val list = mutableListOf<Number>()
+    for(i in 0 until rows) {
+        for(j in 0 until cols) {
+            list.add(init(i,j))
+        }
+    }
+    return Matrix(rows,cols,list)
+}
 
 

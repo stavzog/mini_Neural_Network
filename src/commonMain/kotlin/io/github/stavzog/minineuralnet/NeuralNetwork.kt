@@ -1,6 +1,7 @@
-package com.stavzog.minineuralnet
+package io.github.stavzog.minineuralnet
 
 import kotlin.math.exp
+import kotlin.math.max
 
 class NeuralNetwork(private val inputN: Int, private val hiddenN: Int, private val outputN: Int) {
 
@@ -23,12 +24,12 @@ class NeuralNetwork(private val inputN: Int, private val hiddenN: Int, private v
         hidden += biasH
 
         //activation func
-        hidden.map { sigmoid(it.toFloat()) }
+        hidden = hidden.map { sigmoid(it.toFloat()) }
 
         //ouput layer output
         var output = weightsHO dot hidden
         output += biasO
-        output.map { sigmoid(it.toFloat()) }
+        output = output.map { sigmoid(it.toFloat()) }
 
         return output.flatten()
     }
@@ -43,19 +44,19 @@ class NeuralNetwork(private val inputN: Int, private val hiddenN: Int, private v
         hidden += biasH
 
         //activation func
-        hidden.map { sigmoid(it) }
+        hidden = hidden.map { sigmoid(it) }
 
         //ouput layer output
         var outputs = weightsHO dot hidden
         outputs += biasO
-        outputs.map { sigmoid(it) }
+        outputs = outputs.map { sigmoid(it) }
 
         //Calculate output layer error
         val targets = Matrix(targs)
         val errorsO = targets - outputs
 
         //Calculate output layer gradient
-        var gradients = Matrix.change(outputs) { dsigmoid(it) }
+        var gradients = outputs.map { dsigmoid(it) }
         gradients *= errorsO
         gradients *= lr
 
@@ -70,7 +71,7 @@ class NeuralNetwork(private val inputN: Int, private val hiddenN: Int, private v
         val errorsH = weightsHO.transposed dot errorsO
 
         //Calculate hidden layer gradient
-        var hiddenGradient = Matrix.change(hidden) { dsigmoid(it) }
+        var hiddenGradient = hidden.map { dsigmoid(it) }
         hiddenGradient *= errorsH * lr
 
         //Calculate hidden layer deltas
@@ -84,10 +85,10 @@ class NeuralNetwork(private val inputN: Int, private val hiddenN: Int, private v
     fun copy() = NeuralNetwork(this)
 
     fun mutate(transform: (Number) -> Number) {
-        weightsHO.map(transform)
-        weightsIH.map(transform)
-        biasH.map(transform)
-        biasO.map(transform)
+        weightsHO = weightsHO.map(transform)
+        weightsIH = weightsIH.map(transform)
+        biasH = biasH.map(transform)
+        biasO = biasO.map(transform)
     }
 }
 
