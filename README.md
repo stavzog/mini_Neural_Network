@@ -22,4 +22,4 @@ val output = nn.guess(doubleArrayOf(0,0))
 ---
 Currently, you can get this library by cloning the repo and running `./gradlew publishToMavenLocal`
 
-Also check the `unfinishedNew` channel
+Also check the `unfinishedNew` branch
